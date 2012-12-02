@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<b:beans xmlns="http://www.springframework.org/schema/security"
-    xmlns:b="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    					http://www.springframework.org/schema/context						http://www.springframework.org/schema/context/spring-context.xsd">
 
-   <!-- TODO spring-security config here -->
-</b:beans>
+	<context:annotation-config />
+
+	<import resource="securityContext.xml" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		c:dataSource-ref="ds" />
+
+	<bean id="ds" class="org.hsqldb.jdbc.JDBCDataSource" p:url="jdbc:h2:mem:test" />
+
+	<bean id="jdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"
+		c:dataSource-ref="ds" />
+
+	<bean id="dao" class="com.sopovs.moradanen.haf.service.DaoService" />
+
+</beans>
