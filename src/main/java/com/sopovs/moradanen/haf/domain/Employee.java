@@ -1,20 +1,18 @@
 package com.sopovs.moradanen.haf.domain;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import org.joda.time.LocalDate;
 
 public class Employee {
 
 	private Long id;
-	
-	@NotEmpty
-	@Length(max=30)
+
+	@Size(max = 30, min = 2)
 	private String firstName;
-	@NotEmpty
-	@Length(max=30)
+	@Size(max = 30, min = 2)
 	private String lastName;
-	
+
 	private Double salary;
 	private LocalDate birthdate;
 	private boolean active;

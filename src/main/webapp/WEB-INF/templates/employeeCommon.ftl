@@ -1,23 +1,8 @@
 <#import "spring.ftl" as spring />
-<#import "layout.ftl" as layout />
 
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
-<#assign pageTitle><@spring.message "department.view" /></#assign>
-
-<@layout.layout pageTitle="${pageTitle}">
-	<h1><@spring.message "department.view" /></h1>
-	<table>
-		<tr>
-			<th><@spring.message "department.id" /></th>
-			<td>${department.id?c}</td>
-		</tr>
-		<tr>
-			<th><@spring.message "department.name" /></th>
-			<td>${department.name}</td>
-		</tr>
-	</table>
-	<h2><@spring.message "employee.list" /></h2>
+<#macro employeeTable employees>
 	<table border="1">
 		<tr>
 			<th>ID</th>
@@ -31,7 +16,7 @@
 				<th><@spring.message "simple.edit" /></th>
 			</@security.authorize>
 		</tr>
-		<#list department.employees as employee>
+		<#list employees as employee>
 			<tr>
 				<td>${employee.id?c}</td>
 				<td>${employee.firstName}</td>
@@ -40,11 +25,11 @@
 				<td>${employee.birthdate}</td>
 				<td>${employee.active?string}</td>
 				
-				<td><a href="<@spring.url "/employee/view/${employee.id}"/>"><@spring.message "simple.view" /></a></td>
+				<td><a href="view/${employee.id}"><@spring.message "simple.view" /></a></td>
 				<@security.authorize ifAnyGranted="EDITOR">
-					<td><a href="<@spring.url "/employee/edit/${employee.id}"/>"><@spring.message "simple.edit" /></a></td>
+					<td><a href="edit/${employee.id}"><@spring.message "simple.edit" /></a></td>
 				</@security.authorize>
 			</tr>
 		</#list>
 	</table>
-</@layout.layout>
+</#macro>

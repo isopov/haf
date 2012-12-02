@@ -7,7 +7,7 @@
 	<table>
 		<tr>
 			<th><@spring.message "employee.id" /></th>
-			<td>${employee.id}</td>
+			<td>${employee.id?c}</td>
 		</tr>
 		<tr>
 			<th><@spring.message "employee.firstName" /></th>
