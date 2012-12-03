@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -63,6 +66,19 @@ public class EmployeeEditController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport(){
+			final DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-YYYY");
+			@Override
+			public void setAsText(String text) throws IllegalArgumentException {
+				setValue(formatter.parseLocalDate(text));
+			}
+			
+			@Override
+			public String getAsText() {
+				return formatter.print((LocalDate)getValue());
+
+			}
+		});
 		binder.registerCustomEditor(Department.class, "department",
 				new PropertyEditorSupport() {
 					@Override

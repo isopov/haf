@@ -22,12 +22,12 @@
 				<td>${employee.firstName}</td>
 				<td>${employee.lastName}</td>
 				<td>${employee.salary}</td>
-				<td>${employee.birthdate}</td>
+				<td>${employee.birthdate.toString("dd-MM-YYYY")}</td>
 				<td>${employee.active?string}</td>
 				
-				<td><a href="view/${employee.id?c}"><@spring.message "simple.view" /></a></td>
+				<td><a href="<@spring.url "/employee/view/${employee.id?c}" />"><@spring.message "simple.view" /></a></td>
 				<@security.authorize ifAnyGranted="EDITOR">
-					<td><a href="edit/${employee.id?c}"><@spring.message "simple.edit" /></a></td>
+					<td><a href="<@spring.url "/employee/edit/${employee.id?c}"/>"><@spring.message "simple.edit" /></a></td>
 				</@security.authorize>
 			</tr>
 		</#list>
