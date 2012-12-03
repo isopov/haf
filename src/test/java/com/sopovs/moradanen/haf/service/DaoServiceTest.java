@@ -1,23 +1,36 @@
 package com.sopovs.moradanen.haf.service;
 
 import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.CombinableMatcher.both;
+
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sopovs.moradanen.haf.domain.Department;
 import com.sopovs.moradanen.haf.domain.Employee;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:testContext.xml" })
+// This will roll back any inserts to the DB on every test, and thus tests will
+// be independent
+@Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class DaoServiceTest {
 
 	@Autowired
@@ -25,23 +38,6 @@ public class DaoServiceTest {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-
-	@Test
-	public void testTransactional() {
-
-		try {
-			dao.testTransactional();
-			Assert.fail();
-		} catch (DuplicateKeyException de) {
-			// expected
-		}
-
-		Assert.assertEquals(0, (template.query(
-				"select * from department where name=:name",
-				new MapSqlParameterSource("name", "TestForTransactional"),
-				new DaoService.DepartmentRowMapper()).size()));
-
-	}
 
 	@Test
 	public void testListEmployees() {
@@ -146,6 +142,61 @@ public class DaoServiceTest {
 		assertEquals(employee.getLastName(), employeeFromDb.getLastName());
 		assertEquals(employee.isActive(), employeeFromDb.isActive());
 		assertEquals(employee.getBirthdate(), employeeFromDb.getBirthdate());
+	}
+
+	@Test
+	public void testGetEmployee() {
+		createTestEmployee();
+
+		Employee employee = dao.getEmployee(-1L);
+		assertEquals(-1L, (long) employee.getId());
+		assertEquals("TestFirstName", employee.getFirstName());
+		assertEquals("TestLastName", employee.getLastName());
+		assertEquals(new LocalDate(1990, 10, 10), employee.getBirthdate());
+		assertEquals(42.0, employee.getSalary());
+		assertEquals(0L, (long) employee.getDepartment().getId());
+	}
+
+	@Test
+	public void testSearchEmployee() {
+		createTestEmployee();
+
+		assertTestEmployeeInList(dao.searchEmployees("T*"));
+		assertTestEmployeeInList(dao.searchEmployees("????FirstName*"));
+		assertTestEmployeeInList(dao.searchEmployees("*Name"));
+		assertTestEmployeeInList(dao
+				.searchEmployees("TestFirstNameTestLastName"));
+		assertTestEmployeeInList(dao
+				.searchEmployees("Test?irstN?meTestL?st?ame"));
+	}
+
+	private void assertTestEmployeeInList(List<Employee> employees) {
+		// Another try to use hamcrest instead of plain old JUnit - have not
+		// noticed huge readability increase
+		assertThat(
+				employees,
+				contains(both(hasProperty("firstName", is("TestFirstName")))
+						.and(hasProperty("lastName", is("TestLastName")))
+						.and(hasProperty("birthdate", is(new LocalDate(1990,
+								10, 10)))).and(hasProperty("salary", is(42.0)))
+						.and(hasProperty("active", is(true)))
+						.and(hasProperty("id", is(-1L)))));
+
+	}
+
+	private void createTestEmployee() {
+		template.update(
+				"insert into employee(id, first_name, last_name, birthdate, salary, active, department_id)"
+						+ " values(:id,:firstName,:lastName,:birthdate,:salary,:active,:departmentId)",
+				new MapSqlParameterSource()
+						.addValue("id", -1L)
+						.addValue("firstName", "TestFirstName")
+						.addValue("lastName", "TestLastName")
+						.addValue("birthdate",
+								new LocalDate(1990, 10, 10).toDate())
+						.addValue("salary", 42.0).addValue("active", "Y")
+						.addValue("departmentId", 0L));
+
 	}
 
 }
