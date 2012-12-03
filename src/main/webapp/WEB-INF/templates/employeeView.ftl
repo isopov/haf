@@ -31,7 +31,7 @@
 		</tr>
 		<tr>
 			<th><@spring.message "department.id" /></th>
-			<td>${employee.department.id}</td>
+			<td>${employee.department.id?c}</td>
 		</tr>
 		<tr>
 			<th><@spring.message "department.name" /></th>

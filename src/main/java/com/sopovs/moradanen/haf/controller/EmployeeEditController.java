@@ -29,32 +29,36 @@ public class EmployeeEditController {
 	private IDaoService dao;
 
 	@ModelAttribute("employee")
-	public Employee getDepartmentObject(@PathVariable Long id) {
+	public Employee getEmployeeObject(@PathVariable Long id) {
 		return dao.getEmployee(id);
 	}
-
-	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
-	public ModelAndView getEditForm(@PathVariable long id) {
-
+	
+	@ModelAttribute("departments")
+	public Map<String, String> getDepartments(){
 		Map<String, String> departments = Maps.newHashMap();
 		for (Department department : dao.listDepartments()) {
 			departments.put(String.valueOf(department.getId()),
 					department.getName());
 		}
+		return departments;
+	}
+	
 
-		return new ModelAndView("employeeForm", "departments", departments);
+	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+	public String getEditForm(@PathVariable long id) {
+		return "employeeForm";
 	}
 
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.POST)
-	public String postEditForm(@PathVariable long id,
+	public ModelAndView postEditForm(@PathVariable long id,
 			@Valid @ModelAttribute("employee") Employee employee,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			// TODO Error messages are not shown
-			return "redirect:/employee/edit/{id}";
+			return new ModelAndView("employeeForm","employee",employee);
 		}
 		dao.saveOrUpdateEmployee(employee);
-		return "afterEdit";
+		return new ModelAndView("redirect:/employee/list");
 	}
 
 	@InitBinder

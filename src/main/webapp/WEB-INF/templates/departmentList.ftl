@@ -21,10 +21,10 @@
 			<tr>
 				<td>${department.id?c}</td>
 				<td>${department.name}</td>
-				<td><a href="view/${department.id}"><@spring.message "simple.view" /></a></td>
+				<td><a href="view/${department.id?c}"><@spring.message "simple.view" /></a></td>
 				
 				<@security.authorize ifAnyGranted="EDITOR">
-					<td><a href="edit/${department.id}"><@spring.message "simple.edit" /></a></td>
+					<td><a href="edit/${department.id?c}"><@spring.message "simple.edit" /></a></td>
 				</@security.authorize>
 			</tr>
 		</#list>

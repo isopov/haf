@@ -5,11 +5,9 @@
 <@layout.layout pageTitle="${pageTitle}">
 	<h1><@spring.message "department.edit" /></h1>
 
-	<@spring.bind "department" />
-	<@spring.showErrors "<br>"/> 
 	<form method="POST">
-	<@spring.bind "department.name" />
-	<@spring.message "department.name" /> <input type="text" name="${spring.status.expression}" value="${spring.status.value?default("")}"> <@spring.showErrors "<br>" "department.name"/>
+		<@spring.formInput "department.name"/>
+		<@spring.showErrors "<br>"/> 
 	<input type="submit">
 	</form>
 	

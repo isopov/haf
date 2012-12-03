@@ -34,18 +34,18 @@ public class DepartmentEditController {
 	}
 
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.POST)
-	public String postEditForm(@PathVariable Long id,
+	public ModelAndView postEditForm(@PathVariable Long id,
 			@Valid @ModelAttribute("department") Department department,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			// TODO Error messages are not shown
 			// bindingResult.reject(bindingResult.getFieldError().getCode(),
 			// bindingResult.getFieldError().getDefaultMessage());
-			return "redirect:/department/edit/{id}";
+			return new ModelAndView("departmentForm","department",department);
 		}
 		department.setId(id);
 		dao.saveOrUpdateDepartment(department);
-		return "afterEdit";
+		return new ModelAndView("/department/list");
 	}
 
 }

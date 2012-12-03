@@ -35,28 +35,30 @@ public class EmployeeNewController {
 		return newEmployee;
 	}
 
-	@RequestMapping(value = "new", method = RequestMethod.GET)
-	public ModelAndView getEditForm() {
-
+	@ModelAttribute("departments")
+	public Map<String, String> getDepartments(){
 		Map<String, String> departments = Maps.newHashMap();
 		for (Department department : dao.listDepartments()) {
 			departments.put(String.valueOf(department.getId()),
 					department.getName());
 		}
-
-		return new ModelAndView("employeeForm", "departments", departments);
+		return departments;
+	}
+	
+	@RequestMapping(value = "new", method = RequestMethod.GET)
+	public String getEditForm() {
+		return "employeeForm";
 	}
 
 	@RequestMapping(value = "new", method = RequestMethod.POST)
-	public String postEditForm(
+	public ModelAndView postEditForm(
 			@Valid @ModelAttribute("employee") Employee employee,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			// TODO Error messages are not shown
-			return "redirect:/employee/edit/{id}";
+			return new ModelAndView("employeeForm","employee",employee);
 		}
 		dao.saveOrUpdateEmployee(employee);
-		return "afterEdit";
+		return new ModelAndView("redirect:/employee/list");
 	}
 
 	@InitBinder

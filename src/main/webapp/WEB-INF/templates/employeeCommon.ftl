@@ -25,9 +25,9 @@
 				<td>${employee.birthdate}</td>
 				<td>${employee.active?string}</td>
 				
-				<td><a href="view/${employee.id}"><@spring.message "simple.view" /></a></td>
+				<td><a href="view/${employee.id?c}"><@spring.message "simple.view" /></a></td>
 				<@security.authorize ifAnyGranted="EDITOR">
-					<td><a href="edit/${employee.id}"><@spring.message "simple.edit" /></a></td>
+					<td><a href="edit/${employee.id?c}"><@spring.message "simple.edit" /></a></td>
 				</@security.authorize>
 			</tr>
 		</#list>

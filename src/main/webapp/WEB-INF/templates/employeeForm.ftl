@@ -6,21 +6,19 @@
 	<h1><@spring.message "employee.edit" /></h1>
 	
 	
-	<@spring.bind "employee" />
-	<@spring.showErrors "<br>"/> 
 	<form method="POST">
-		<@spring.bind "employee.firstName" />
-			<@spring.message "employee.firstName" /> <input type="text" 
-			name="${spring.status.expression}" value="${spring.status.value?default("")}">
-			<@spring.showErrors "<br>" "employee.firstName"/>
+
+		<@spring.message "employee.firstName" />
+		<@spring.formInput "employee.firstName"/>
+		<@spring.showErrors "<br>"/> 
 		<br />
 		
-		<@spring.bind "employee.lastName" />
-			<@spring.message "employee.lastName" /> <input type="text" 
-			name="${spring.status.expression}" value="${spring.status.value?default("")}">
-			<@spring.showErrors "<br>" "employee.lastName"/>
+		<@spring.message "employee.lastName" />
+		<@spring.formInput "employee.lastName"/>
+		<@spring.showErrors "<br>"/> 
 		<br />
 		
+
 		<#-- Working checkbox binding taken from http://justsomejavaguy.blogspot.com/2009/08/single-form-checkbox-macro-for.html -->
 		<@spring.bind "employee.active" />
     		<@spring.message "employee.active" /> <input type="hidden" name="_${spring.status.expression}" value="false"/>
@@ -29,17 +27,17 @@
     			<@spring.closeTag/> 
 		<br />
 		
-		<@spring.bind "employee.salary" />
-			<@spring.message "employee.salary" /> <input type="text" 
-			name="${spring.status.expression}" value="${spring.status.value?default("")}">
-			<@spring.showErrors "<br>" "employee.salary"/>
+		
+		<@spring.message "employee.salary" />
+		<@spring.formInput "employee.salary"/>
+		<@spring.showErrors "<br>"/> 
+		<br />
+		
+		<@spring.message "employee.birthdate" />
+		<@spring.formInput "employee.birthdate"/>
+		<@spring.showErrors "<br>"/> 
 		<br />
 
-		<@spring.bind "employee.birthdate" />
-			<@spring.message "employee.birthdate" /> <input type="text" 
-			name="${spring.status.expression}" value="${spring.status.value?default("")}">
-			<@spring.showErrors "<br>" "employee.birthdate"/>
-		<br />
 		
 		<@spring.message "employee.department" /><@spring.formSingleSelect path="employee.department" options=departments/>
 		<br />

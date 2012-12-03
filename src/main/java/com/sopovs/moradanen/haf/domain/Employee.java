@@ -1,5 +1,9 @@
 package com.sopovs.moradanen.haf.domain;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.joda.time.LocalDate;
@@ -13,10 +17,21 @@ public class Employee {
 	@Size(max = 30, min = 2)
 	private String lastName;
 
+	// JSR specification states that these annotations might not work on double,
+	// and it depends on implementation
+	@DecimalMin("100.0")
+	@DecimalMax("100000.0")
+	@NotNull
 	private Double salary;
+
+	@NotNull
+	// joda-time is supported in this implementation of bean validator, while
+	// specification promise support only for java.util.* classes
+	@Past
 	private LocalDate birthdate;
 	private boolean active;
 
+	@NotNull
 	private Department department;
 
 	public Employee() {
