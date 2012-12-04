@@ -1,17 +1,16 @@
 package com.sopovs.moradanen.haf.service;
 
-import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.CombinableMatcher.both;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.joda.time.LocalDate;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class DaoServiceTest {
 		Department depFromDb = template.queryForObject(
 				"select * from department where name=:name",
 				new MapSqlParameterSource("name", testDepartmentname),
-				new DaoService.DepartmentRowMapper());
+				new HsqlDaoService.DepartmentRowMapper());
 
 		Assert.assertEquals(testDepartmentname, depFromDb.getName());
 	}
@@ -68,7 +67,7 @@ public class DaoServiceTest {
 		Long id = template.queryForObject(
 				"select * from department where name=:name",
 				new MapSqlParameterSource("name", testDepartmentname),
-				new DaoService.DepartmentRowMapper()).getId();
+				new HsqlDaoService.DepartmentRowMapper()).getId();
 		Department depFromDao = dao.getDepartment(id);
 
 		Assert.assertEquals(testDepartmentname, depFromDao.getName());
@@ -85,14 +84,14 @@ public class DaoServiceTest {
 		Department marketingDepartment = template.queryForObject(
 				"select * from department where name=:name",
 				new MapSqlParameterSource("name", "Marketing"),
-				new DaoService.DepartmentRowMapper());
+				new HsqlDaoService.DepartmentRowMapper());
 		marketingDepartment.setName("Marketing Testing Update");
 		dao.saveOrUpdateDepartment(marketingDepartment);
 
 		Department marketingDepartmentUpdated = template.queryForObject(
 				"select * from department where id=:id",
 				new MapSqlParameterSource("id", marketingDepartment.getId()),
-				new DaoService.DepartmentRowMapper());
+				new HsqlDaoService.DepartmentRowMapper());
 
 		Assert.assertEquals("Marketing Testing Update",
 				marketingDepartmentUpdated.getName());
@@ -108,7 +107,7 @@ public class DaoServiceTest {
 		Employee depFromDb = template.queryForObject(
 				"select * from employee where first_name=:firstName",
 				new MapSqlParameterSource("firstName", "TestFirstName"),
-				new DaoService.EmployeeRowMapper());
+				new HsqlDaoService.EmployeeRowMapper());
 
 		Assert.assertNotNull(depFromDb.getId());
 		assertEquals(testEmployee.getFirstName(), depFromDb.getFirstName());
@@ -123,7 +122,7 @@ public class DaoServiceTest {
 		Employee employee = template.queryForObject(
 				"select * from employee where id=:id",
 				new MapSqlParameterSource("id", 10L),
-				new DaoService.EmployeeRowMapper());
+				new HsqlDaoService.EmployeeRowMapper());
 
 		employee.setActive(!employee.isActive());
 		employee.setFirstName(employee.getFirstName() + " TestUpdated");
@@ -136,7 +135,7 @@ public class DaoServiceTest {
 		Employee employeeFromDb = template.queryForObject(
 				"select * from employee where id=:id",
 				new MapSqlParameterSource("id", 10L),
-				new DaoService.EmployeeRowMapper());
+				new HsqlDaoService.EmployeeRowMapper());
 
 		assertEquals(employee.getFirstName(), employeeFromDb.getFirstName());
 		assertEquals(employee.getLastName(), employeeFromDb.getLastName());
@@ -153,7 +152,7 @@ public class DaoServiceTest {
 		assertEquals("TestFirstName", employee.getFirstName());
 		assertEquals("TestLastName", employee.getLastName());
 		assertEquals(new LocalDate(1990, 10, 10), employee.getBirthdate());
-		assertEquals(42.0, employee.getSalary());
+		assertEquals(42.0, employee.getSalary(), 0.000001);
 		assertEquals(0L, (long) employee.getDepartment().getId());
 	}
 

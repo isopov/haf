@@ -1,7 +1,6 @@
 package com.sopovs.moradanen.haf.service;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class DaoServiceTransactionalTest {
 		Assert.assertEquals(0, (template.query(
 				"select * from department where name=:name",
 				new MapSqlParameterSource("name", "TestForTransactional"),
-				new DaoService.DepartmentRowMapper()).size()));
+				new HsqlDaoService.DepartmentRowMapper()).size()));
 
 	}
 

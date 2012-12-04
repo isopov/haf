@@ -11,6 +11,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,9 +36,9 @@ public class EmployeeEditController {
 	public Employee getEmployeeObject(@PathVariable Long id) {
 		return dao.getEmployee(id);
 	}
-	
+
 	@ModelAttribute("departments")
-	public Map<String, String> getDepartments(){
+	public Map<String, String> getDepartments() {
 		Map<String, String> departments = Maps.newHashMap();
 		for (Department department : dao.listDepartments()) {
 			departments.put(String.valueOf(department.getId()),
@@ -45,7 +46,6 @@ public class EmployeeEditController {
 		}
 		return departments;
 	}
-	
 
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public String getEditForm(@PathVariable long id) {
@@ -56,9 +56,15 @@ public class EmployeeEditController {
 	public ModelAndView postEditForm(@PathVariable long id,
 			@Valid @ModelAttribute("employee") Employee employee,
 			BindingResult bindingResult) {
+		if (employee.getBirthdate().isBefore(new LocalDate(1900, 1, 1))) {
+			bindingResult.addError(new FieldError("employee", "birthdate",
+					employee.getBirthdate(), false, null, null,
+					"must be more than in 1900"));
+		}
+
 		if (bindingResult.hasErrors()) {
 			// TODO Error messages are not shown
-			return new ModelAndView("employeeForm","employee",employee);
+			return new ModelAndView("employeeForm", "employee", employee);
 		}
 		dao.saveOrUpdateEmployee(employee);
 		return new ModelAndView("redirect:/employee/list");
@@ -66,19 +72,23 @@ public class EmployeeEditController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport(){
-			final DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-YYYY");
-			@Override
-			public void setAsText(String text) throws IllegalArgumentException {
-				setValue(formatter.parseLocalDate(text));
-			}
-			
-			@Override
-			public String getAsText() {
-				return formatter.print((LocalDate)getValue());
+		binder.registerCustomEditor(LocalDate.class,
+				new PropertyEditorSupport() {
+					final DateTimeFormatter formatter = DateTimeFormat
+							.forPattern("dd-MM-YYYY");
 
-			}
-		});
+					@Override
+					public void setAsText(String text)
+							throws IllegalArgumentException {
+						setValue(formatter.parseLocalDate(text));
+					}
+
+					@Override
+					public String getAsText() {
+						return formatter.print((LocalDate) getValue());
+
+					}
+				});
 		binder.registerCustomEditor(Department.class, "department",
 				new PropertyEditorSupport() {
 					@Override

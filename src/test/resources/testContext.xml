@@ -12,12 +12,12 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		c:dataSource-ref="ds" />
 
-	<bean id="ds" class="org.hsqldb.jdbc.JDBCDataSource" p:url="jdbc:hsqldb:mem:test" />
-
+	
 	<bean id="jdbcTemplate"
 		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"
 		c:dataSource-ref="ds" />
 
-	<bean id="dao" class="com.sopovs.moradanen.haf.service.DaoService" />
+	<bean id="ds" class="org.hsqldb.jdbc.JDBCDataSource" p:url="jdbc:hsqldb:mem:test" />
+	<bean id="dao" class="com.sopovs.moradanen.haf.service.HsqlDaoService" />
 
 </beans>

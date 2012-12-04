@@ -4,6 +4,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.joda.time.LocalDate;
@@ -13,8 +14,10 @@ public class Employee {
 	private Long id;
 
 	@Size(max = 30, min = 2)
+	@Pattern(regexp = "^[A-Z0-9-]+$", flags = Pattern.Flag.CASE_INSENSITIVE, message = "can only contain alphanumeric characters")
 	private String firstName;
 	@Size(max = 30, min = 2)
+	@Pattern(regexp = "^[A-Z0-9-]+$", flags = Pattern.Flag.CASE_INSENSITIVE, message = "can only contain alphanumeric characters")
 	private String lastName;
 
 	// JSR specification states that these annotations might not work on double,

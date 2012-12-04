@@ -5,9 +5,11 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,7 +38,7 @@ public class EmployeeNewController {
 	}
 
 	@ModelAttribute("departments")
-	public Map<String, String> getDepartments(){
+	public Map<String, String> getDepartments() {
 		Map<String, String> departments = Maps.newHashMap();
 		for (Department department : dao.listDepartments()) {
 			departments.put(String.valueOf(department.getId()),
@@ -44,7 +46,7 @@ public class EmployeeNewController {
 		}
 		return departments;
 	}
-	
+
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public String getEditForm() {
 		return "employeeForm";
@@ -54,8 +56,13 @@ public class EmployeeNewController {
 	public ModelAndView postEditForm(
 			@Valid @ModelAttribute("employee") Employee employee,
 			BindingResult bindingResult) {
+		if (employee.getBirthdate().isBefore(new LocalDate(1900, 1, 1))) {
+			bindingResult.addError(new FieldError("employee", "birthdate",
+					employee.getBirthdate(), false, null, null,
+					"must be more than in 1900"));
+		}
 		if (bindingResult.hasErrors()) {
-			return new ModelAndView("employeeForm","employee",employee);
+			return new ModelAndView("employeeForm", "employee", employee);
 		}
 		dao.saveOrUpdateEmployee(employee);
 		return new ModelAndView("redirect:/employee/list");

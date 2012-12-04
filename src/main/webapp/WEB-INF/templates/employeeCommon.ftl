@@ -3,6 +3,7 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
 <#macro employeeTable employees>
+	<#setting number_format="0.##">
 	<table border="1">
 		<tr>
 			<th>ID</th>

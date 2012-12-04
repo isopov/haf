@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -25,40 +24,20 @@ import com.google.common.collect.Lists;
 import com.sopovs.moradanen.haf.domain.Department;
 import com.sopovs.moradanen.haf.domain.Employee;
 
-@Service
 @Transactional
-public class DaoService implements InitializingBean, IDaoService {
-	private final Logger logger = LoggerFactory.getLogger(DaoService.class);
+public abstract class AbstractDaoService implements InitializingBean,
+		IDaoService {
+	private final Logger logger = LoggerFactory
+			.getLogger(AbstractDaoService.class);
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-	protected void dropIfExistsAndCreateSchema() {
-		template.update("drop table employee if exists",
-				Collections.<String, String> emptyMap());
-		template.update("drop table dpublicepartment if exists",
-				Collections.<String, String> emptyMap());
-
-		template.update(
-				"create table department(id int identity primary key, name varchar(30))",
-				Collections.<String, String> emptyMap());
-		template.update("alter table department add unique (name)",
-				Collections.<String, String> emptyMap());
-
-		template.update(
-				"create table employee(id int identity primary key,"
-						+ " first_name varchar(30), last_name varchar(30),"
-						+ " salary double, birthdate date, active char(1), department_id int)",
-				Collections.<String, String> emptyMap());
-
-		// TODO There were some problems creating named foreign key constraint
-		template.update("alter table employee add foreign key (department_id)"
-				+ " references department(id)",
-				Collections.<String, String> emptyMap());
-
-		logger.info("schema created");
-
+	protected NamedParameterJdbcTemplate getTemplate() {
+		return template;
 	}
+
+	protected abstract void dropIfExistsAndCreateSchema();
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -126,6 +105,7 @@ public class DaoService implements InitializingBean, IDaoService {
 						+ " values(:firstName, :lastName, :salary, :birthDate, :active,"
 						+ " (select id from department where name=:departmentName))",
 				empoyees);
+		logger.info("Test data installed");
 
 	}
 
@@ -140,6 +120,7 @@ public class DaoService implements InitializingBean, IDaoService {
 
 	@Override
 	public Employee getEmployee(Long id) {
+		logger.info("getting employee {}", id);
 		return template.queryForObject(
 				"select e.*, d.id as dep_id, d.name as dep_name"
 						+ " from employee e join department d"
@@ -150,6 +131,7 @@ public class DaoService implements InitializingBean, IDaoService {
 
 	@Override
 	public List<Employee> listEmployees() {
+		logger.info("listing employees");
 		return template.query("select * from employee order by id",
 				Collections.<String, String> emptyMap(),
 				new EmployeeRowMapper());
@@ -157,6 +139,7 @@ public class DaoService implements InitializingBean, IDaoService {
 
 	@Override
 	public List<Employee> searchEmployees(String criteria) {
+		logger.info("searching for employees with {}", criteria);
 		return template.query("select * from employee"
 				+ " where (first_name + last_name) like :criteria",
 				new MapSqlParameterSource("criteria", criteria
@@ -166,6 +149,7 @@ public class DaoService implements InitializingBean, IDaoService {
 
 	@Override
 	public Department getDepartment(Long id) {
+		logger.info("getting department {}", id);
 		Department result = template.queryForObject(
 				"select * from department where id=:id",
 				new MapSqlParameterSource("id", id), new DepartmentRowMapper());
@@ -177,6 +161,7 @@ public class DaoService implements InitializingBean, IDaoService {
 
 	@Override
 	public void saveOrUpdateDepartment(Department department) {
+		logger.info("saving/updating department {}", department);
 		if (department.getId() == null) {
 			template.update("insert into department(name) values(:name)",
 					new MapSqlParameterSource("name", department.getName()));
@@ -191,6 +176,7 @@ public class DaoService implements InitializingBean, IDaoService {
 
 	@Override
 	public void saveOrUpdateEmployee(Employee employee) {
+		logger.info("saving/updating employee {}", employee);
 		MapSqlParameterSource pars = new MapSqlParameterSource()
 				.addValue("id", employee.getId())
 				.addValue("firstName", employee.getFirstName())
@@ -219,6 +205,7 @@ public class DaoService implements InitializingBean, IDaoService {
 
 	@Override
 	public List<Department> listDepartments() {
+		logger.info("listing departments");
 		return template.query("select * from department",
 				Collections.<String, String> emptyMap(),
 				new DepartmentRowMapper());

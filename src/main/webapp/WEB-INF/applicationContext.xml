@@ -15,13 +15,20 @@
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		c:dataSource-ref="ds" />
-
-	<bean id="ds" class="org.hsqldb.jdbc.JDBCDataSource" p:url="jdbc:hsqldb:mem:test" />
-
 	<bean id="jdbcTemplate"
 		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"
 		c:dataSource-ref="ds" />
 
-	<bean id="dao" class="com.sopovs.moradanen.haf.service.DaoService" />
+
+	<beans profile="default">
+		<bean id="ds" class="org.hsqldb.jdbc.JDBCDataSource" p:url="jdbc:hsqldb:mem:test" />
+		<bean id="dao" class="com.sopovs.moradanen.haf.service.HsqlDaoService" />
+	</beans>
+	<beans profile="postgres">
+		<bean id="ds"
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+			c:url="jdbc:postgresql://localhost/haf" c:username="haf" c:password="haf" />
+		<bean id="dao" class="com.sopovs.moradanen.haf.service.PgsqlDaoService" />
+	</beans>
 
 </beans>
