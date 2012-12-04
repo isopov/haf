@@ -34,4 +34,20 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
+	<error-page>
+    	<error-code>404</error-code>
+    	<location>/404</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>500</error-code>
+		<location>/500</location>
+  	</error-page>
+  	
+  	<error-page>
+		<error-code>403</error-code>
+		<location>/403</location>
+  	</error-page>
+  	
+
 </web-app>
