@@ -15,15 +15,7 @@ public class HerokuPgsqlDaoService extends PgsqlDaoService {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		int tablesCreated = getTemplate()
-				.update("create table IF NOT EXIST department(id serial primary key, name varchar(30))",
-						Collections.<String, String> emptyMap());
-		
-		if(tablesCreated != 0){
-			super.afterPropertiesSet();
-		}else{
-			logger.info("Schema already exists");
-		}
+		//no code
 	}
 	
 }
