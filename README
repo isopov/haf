@@ -1,3 +1,5 @@
+Sample application for spring-mvc with spring-security (really dummy, but two possible roles), spring-test, spring-jdbc and validation.
+
 DataSource:
 	By default in-memory HSQLDB datasource is used. It is managed with Spring profiles and if you want to test on PostgreSQL (tested on 8.4) you should run aplication with "postgres" spring profile. To do so you may run JVM with system property -Dspring.profiles.active="postgres". Where this should be done depends on you application server. On the start application will drop tables department/employee in DB if they exist, create them again and populate with test data.
 Unit tets:
@@ -8,10 +10,3 @@ Security:
 	Two users are defined in the system - "editor/editor" and "viewer/viewer". Default spring-security options for form authentication, login/logout urls are used. Users are not stored in DB, password are not hashed, as it is expected from the real security system.
 I18n: 
 	Most messages are given in Russian and English - the "change language" links are next to the logout.
-
-Not implemented parts of the specification:
-	-Redirecting to the previous page after edit forms. have not found normal way of doing this while not opening form in the iframe or div with Ajax call. Either javascript's "history.go(-2);" or parsing Http-header referer (In http header this word contains error according to the RFC) work unreliably;
-	-Changing elements position ("presentation templates") are not implemented;
-	-Validation for salary is not fully implemented (15 digits total), since using doubles for financial calculations can be considered as a last resort for really hard optimization and can not be used in such system other than in the very simple prototype.
-
-Tested in Jetty (running with RunJettyRun Eclipse plugin spring-security-taglib.jar should be copied to src/main/webapp/WEB-INF/lib folder - without this freemarker will not be able to use it... ClassLoader magic is nice as always - this issue has no deal with production since all jars are either in this folder or in classpaths of the paret ClassLoaders) and Google Chrome.
