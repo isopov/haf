@@ -1,3 +1,7 @@
+It may be observed in the wild on:
+http://young-atoll-7986.herokuapp.com/
+("editor/editor" or "viewer/viewer" for login/password)
+
 Sample application for spring-mvc with spring-security (really dummy, but two possible roles), spring-test, spring-jdbc and validation.
 
 DataSource:
