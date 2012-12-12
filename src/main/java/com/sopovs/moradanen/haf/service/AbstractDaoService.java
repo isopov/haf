@@ -42,7 +42,10 @@ public abstract class AbstractDaoService implements InitializingBean,
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		dropIfExistsAndCreateSchema();
-
+		insertDummyData();
+	}
+	
+	protected void insertDummyData(){
 		List<String> departmentNames = Arrays.asList("Marketing", "Stocking",
 				"Accounting", "Logistics", "Legal", "Planning", "Security",
 				"Human resources");
@@ -106,8 +109,8 @@ public abstract class AbstractDaoService implements InitializingBean,
 						+ " (select id from department where name=:departmentName))",
 				empoyees);
 		logger.info("Test data installed");
-
 	}
+	
 
 	@Override
 	public void testTransactional() {

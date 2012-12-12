@@ -30,5 +30,17 @@
 			c:url="jdbc:postgresql://localhost/haf" c:username="haf" c:password="haf" />
 		<bean id="dao" class="com.sopovs.moradanen.haf.service.PgsqlDaoService" />
 	</beans>
+	<beans profile="heroku">
+		<bean class="java.net.URI" id="dbUrl">
+			<constructor-arg value="#{systemEnvironment['DATABASE_URL']}" />
+		</bean>
+		<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+			<property name="url"
+				value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + @dbUrl.getPath() }" />
+			<property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }" />
+			<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }" />
+		</bean>
+		<bean id="dao" class="com.sopovs.moradanen.haf.service.HerokuPgsqlDaoService" />
+	</beans>
 
 </beans>
