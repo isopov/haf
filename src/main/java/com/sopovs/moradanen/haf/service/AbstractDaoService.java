@@ -44,8 +44,8 @@ public abstract class AbstractDaoService implements InitializingBean,
 		dropIfExistsAndCreateSchema();
 		insertDummyData();
 	}
-	
-	protected void insertDummyData(){
+
+	protected void insertDummyData() {
 		List<String> departmentNames = Arrays.asList("Marketing", "Stocking",
 				"Accounting", "Logistics", "Legal", "Planning", "Security",
 				"Human resources");
@@ -110,7 +110,6 @@ public abstract class AbstractDaoService implements InitializingBean,
 				empoyees);
 		logger.info("Test data installed");
 	}
-	
 
 	@Override
 	public void testTransactional() {
@@ -144,7 +143,7 @@ public abstract class AbstractDaoService implements InitializingBean,
 	public List<Employee> searchEmployees(String criteria) {
 		logger.info("searching for employees with {}", criteria);
 		return template.query("select * from employee"
-				+ " where (first_name + last_name) like :criteria",
+				+ " where (first_name || last_name) like :criteria",
 				new MapSqlParameterSource("criteria", criteria
 						.replace("?", "_").replace("*", "%")),
 				new EmployeeRowMapper());
