@@ -8,6 +8,7 @@
     <head>
         <title>${pageTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.3.js" type="text/javascript"></script>
     </head>
     <body>
     	<#--Maybe it should be done ith divs, but I'm not so good at making-up html-->
