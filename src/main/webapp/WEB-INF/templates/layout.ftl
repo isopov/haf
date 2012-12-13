@@ -34,11 +34,6 @@
         			<a href="<@spring.url "/?lang=ru"/>">Русская версия</a>
     			</td>
     			<td>
-    				<@security.authorize ifAnyGranted="EDITOR">
-        				<a href="<@spring.url "/department/new"/>"><@spring.message "department.new" /></a>
-        			</@security.authorize>
-    			</td>
-    			<td>
         			<a href="<@spring.url "/j_spring_security_logout"/>"><@spring.message "simple.logout" /></a>
     			</td>
     		</tr>
