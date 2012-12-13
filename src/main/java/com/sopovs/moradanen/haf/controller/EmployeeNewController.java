@@ -56,7 +56,8 @@ public class EmployeeNewController {
 	public ModelAndView postEditForm(
 			@Valid @ModelAttribute("employee") Employee employee,
 			BindingResult bindingResult) {
-		if (employee.getBirthdate().isBefore(new LocalDate(1900, 1, 1))) {
+		if (employee.getBirthdate() != null
+				&& employee.getBirthdate().isBefore(new LocalDate(1900, 1, 1))) {
 			bindingResult.addError(new FieldError("employee", "birthdate",
 					employee.getBirthdate(), false, null, null,
 					"must be more than in 1900"));
