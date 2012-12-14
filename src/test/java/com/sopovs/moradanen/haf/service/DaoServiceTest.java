@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -25,7 +26,8 @@ import com.sopovs.moradanen.haf.domain.Department;
 import com.sopovs.moradanen.haf.domain.Employee;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:testContext.xml" })
+@ActiveProfiles("default")
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/applicationContext.xml" })
 // This will roll back any inserts to the DB on every test, and thus tests will
 // be independent
 @Transactional
