@@ -35,8 +35,7 @@ public class DepartmentEditController {
 	}
 
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.POST)
-	public ModelAndView postEditForm(@PathVariable Long id,
-			@Valid @ModelAttribute("department") Department department,
+	public ModelAndView postEditForm(@PathVariable Long id, @Valid @ModelAttribute("department") Department department,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			// TODO Error messages are not shown
@@ -46,7 +45,7 @@ public class DepartmentEditController {
 		}
 		department.setId(id);
 		dao.saveOrUpdateDepartment(department);
-		return new ModelAndView("/department/list");
+		return new ModelAndView("redirect:/department/list");
 	}
 
 	@ExceptionHandler(org.springframework.dao.DuplicateKeyException.class)

@@ -20,7 +20,7 @@
 	<form method="POST" id="departmentForm">
 		<@spring.formInput "department.name" "class='required' minlength='2' maxlength='30'" />
 		<@spring.showErrors "<br>"/> 
-	<input type="submit">
+		<input type="submit">
 	</form>
 	
 	
