@@ -5,32 +5,41 @@
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 
+	<http pattern="/css/**" security="none" />
+	<http pattern="/js/**" security="none" />
+	<http pattern="/img/**" security="none" />
 
 	<http use-expressions="true">
 		<intercept-url pattern="/department/new/**" access="hasRole('EDITOR')" />
 		<intercept-url pattern="/department/edit/**" access="hasRole('EDITOR')" />
 		<intercept-url pattern="/employee/new/**" access="hasRole('EDITOR')" />
 		<intercept-url pattern="/employee/edit/**" access="hasRole('EDITOR')" />
-		
+
 		<intercept-url pattern="/**" access="isAuthenticated()" />
-		
-		<intercept-url pattern="/spring_security_login" access="permitAll" />
+
+		<!-- With recent versions of spring-security there is no need to explicitly 
+			exclude login url from security - it will be excluded by Spring and there 
+			will be no infinite cycle anyway -->
+			
 		<form-login />
 		<logout logout-success-url="/" delete-cookies="JSESSIONID" />
 		<remember-me />
 	</http>
-	
-	<b:bean id="encoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder"/>
+
+
+
+	<b:bean id="encoder"
+		class="org.springframework.security.crypto.password.NoOpPasswordEncoder" />
 
 	<authentication-manager>
-        <authentication-provider>
-            <password-encoder ref="encoder"/>
-            <user-service>
-                <user name="editor" password="editor" authorities="VIEWER, EDITOR" />
-                <user name="viewer" password="viewer" authorities="VIEWER" />
-            </user-service>
-        </authentication-provider>
-    </authentication-manager>
+		<authentication-provider>
+			<password-encoder ref="encoder" />
+			<user-service>
+				<user name="editor" password="editor" authorities="VIEWER, EDITOR" />
+				<user name="viewer" password="viewer" authorities="VIEWER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
 
 
 </b:beans>
