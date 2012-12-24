@@ -39,6 +39,8 @@ public class EmployeeController {
 			@Override
 			protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook,
 					HttpServletRequest request, HttpServletResponse response) throws Exception {
+				response.addHeader("Content-Disposition", "attachment; filename=\"employee-list.xls\"");
+
 				HSSFSheet sheet = workbook.createSheet("List of employees");
 
 				setText(getCell(sheet, 0, 0), "Id");
