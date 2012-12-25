@@ -5,3 +5,6 @@ target
 .springBeans
 *~
 *.jar
+#For Idea project files
+.idea
+*.iml
