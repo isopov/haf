@@ -1,4 +1,4 @@
-package com.sopovs.moradanen.haf.controller;
+package com.sopovs.moradanen.haf.controller.employee;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class EmployeeController {
 
 	@RequestMapping("list")
 	public ModelAndView list() {
-		return new ModelAndView("employeeList", "employeeList", dao.listEmployees());
+		return new ModelAndView("employee/employeeList", "employeeList", dao.listEmployees());
 	}
 
 	@RequestMapping("list/excel")
@@ -64,18 +64,18 @@ public class EmployeeController {
 
 	@RequestMapping("view/{id}")
 	public ModelAndView view(@PathVariable long id) {
-		return new ModelAndView("employeeView", "employee", dao.getEmployee(id));
+		return new ModelAndView("employee/employeeView", "employee", dao.getEmployee(id));
 	}
 
 	@RequestMapping(value = "search", method = RequestMethod.GET)
 	public String searchForm() {
-		return "employeeSearch";
+		return "employee/employeeSearch";
 	}
 
 	@RequestMapping(value = "search", method = RequestMethod.POST)
 	public ModelAndView performSearch(@RequestParam String searchString) {
 		// TODO accept only alphabetic characters plus '?' and '*'
-		return new ModelAndView("employeeSearch", "employeeList", dao.searchEmployees(searchString));
+		return new ModelAndView("employee/employeeSearch", "employeeList", dao.searchEmployees(searchString));
 	}
 
 }

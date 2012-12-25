@@ -1,4 +1,4 @@
-package com.sopovs.moradanen.haf.controller;
+package com.sopovs.moradanen.haf.controller.employee;
 
 import javax.validation.Valid;
 
@@ -26,13 +26,11 @@ public class EmployeeNewController extends AbstractEmployeeController {
 
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public String getEditForm() {
-		return "employeeForm";
+		return "employee/employeeForm";
 	}
 
 	@RequestMapping(value = "new", method = RequestMethod.POST)
-	public ModelAndView postEditForm(
-			@Valid @ModelAttribute("employee") Employee employee,
-			BindingResult bindingResult) {
+	public ModelAndView postEditForm(@Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
 		return saveOrUpdateEmployee(employee, bindingResult);
 
 	}

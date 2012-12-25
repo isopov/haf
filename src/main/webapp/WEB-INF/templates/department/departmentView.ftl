@@ -1,7 +1,7 @@
-<#import "spring.ftl" as spring />
-<#import "layout.ftl" as layout />
+<#import "../spring.ftl" as spring />
+<#import "../layout.ftl" as layout />
 
-<#import "employeeCommon.ftl" as epmloyee />
+<#import "../employee/employeeCommon.ftl" as epmloyee />
 
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 

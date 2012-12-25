@@ -1,4 +1,4 @@
-package com.sopovs.moradanen.haf.controller;
+package com.sopovs.moradanen.haf.controller.department;
 
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ public class DepartmentEditController {
 
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView getEditForm(@PathVariable Long id) {
-		return new ModelAndView("departmentForm", new HashMap<String, String>());
+		return new ModelAndView("department/departmentForm", new HashMap<String, String>());
 	}
 
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.POST)
@@ -41,7 +41,7 @@ public class DepartmentEditController {
 			// TODO Error messages are not shown
 			// bindingResult.reject(bindingResult.getFieldError().getCode(),
 			// bindingResult.getFieldError().getDefaultMessage());
-			return new ModelAndView("departmentForm", "department", department);
+			return new ModelAndView("department/departmentForm", "department", department);
 		}
 		department.setId(id);
 		dao.saveOrUpdateDepartment(department);
@@ -50,7 +50,7 @@ public class DepartmentEditController {
 
 	@ExceptionHandler(org.springframework.dao.DuplicateKeyException.class)
 	public String duplicateDepartment() {
-		return "dupDepartment";
+		return "department/dupDepartment";
 	}
 
 }

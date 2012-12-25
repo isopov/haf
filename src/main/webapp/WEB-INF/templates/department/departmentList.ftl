@@ -1,5 +1,5 @@
-<#import "spring.ftl" as spring />
-<#import "layout.ftl" as layout />
+<#import "../spring.ftl" as spring />
+<#import "../layout.ftl" as layout />
 
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 

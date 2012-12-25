@@ -1,5 +1,5 @@
-<#import "spring.ftl" as spring />
-<#import "layout.ftl" as layout />
+<#import "../spring.ftl" as spring />
+<#import "../layout.ftl" as layout />
 <#import "employeeCommon.ftl" as epmloyee />
 
 <#assign pageTitle><@spring.message "employee.list" /></#assign>

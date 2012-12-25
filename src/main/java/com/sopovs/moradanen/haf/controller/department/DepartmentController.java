@@ -1,4 +1,4 @@
-package com.sopovs.moradanen.haf.controller;
+package com.sopovs.moradanen.haf.controller.department;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,13 +17,11 @@ public class DepartmentController {
 
 	@RequestMapping("list")
 	public ModelAndView list() {
-		return new ModelAndView("departmentList", "departments",
-				dao.listDepartments());
+		return new ModelAndView("department/departmentList", "departments", dao.listDepartments());
 	}
 
 	@RequestMapping("view/{id}")
 	public ModelAndView view(@PathVariable Long id) {
-		return new ModelAndView("departmentView", "department",
-				dao.getDepartment(id));
+		return new ModelAndView("department/departmentView", "department", dao.getDepartment(id));
 	}
 }

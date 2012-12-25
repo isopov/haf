@@ -1,4 +1,4 @@
-package com.sopovs.moradanen.haf.controller;
+package com.sopovs.moradanen.haf.controller.employee;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Map;

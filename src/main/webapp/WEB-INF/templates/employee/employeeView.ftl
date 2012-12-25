@@ -1,5 +1,5 @@
-<#import "spring.ftl" as spring />
-<#import "layout.ftl" as layout />
+<#import "../spring.ftl" as spring />
+<#import "../layout.ftl" as layout />
 <#assign pageTitle><@spring.message "employee.view" /></#assign>
 
 <@layout.layout pageTitle="${pageTitle}">

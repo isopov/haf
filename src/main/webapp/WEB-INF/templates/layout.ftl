@@ -2,10 +2,8 @@
 
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
-<#macro layout pageTitle>
-<!DOCTYPE html>
-<html>
-    <head>
+<#macro head pageTitle>
+	<head>
     	<meta charset="utf-8">
         <title>${pageTitle}</title>
         
@@ -24,6 +22,12 @@
         <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.3.js" type="text/javascript"></script>
 		<script src="<@spring.url "/js/bootstrap.js"/>" type="text/javascript"></script>
     </head>
+</#macro>
+
+<#macro layout pageTitle>
+<!DOCTYPE html>
+<html>
+    <@head pageTitle/>
     <body>
     
     <div class="navbar navbar-inverse navbar-fixed-top">

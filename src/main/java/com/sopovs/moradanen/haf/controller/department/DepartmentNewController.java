@@ -1,4 +1,4 @@
-package com.sopovs.moradanen.haf.controller;
+package com.sopovs.moradanen.haf.controller.department;
 
 import javax.validation.Valid;
 
@@ -27,12 +27,11 @@ public class DepartmentNewController {
 
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public String newDepartment() {
-		return "departmentForm";
+		return "department/departmentForm";
 	}
 
 	@RequestMapping(value = "new", method = RequestMethod.POST)
-	public String newDepartmentForm(
-			@ModelAttribute("department") @Valid Department department,
+	public String newDepartmentForm(@ModelAttribute("department") @Valid Department department,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("foo");
@@ -43,6 +42,6 @@ public class DepartmentNewController {
 
 	@ExceptionHandler(org.springframework.dao.DuplicateKeyException.class)
 	public String duplicateDepartment() {
-		return "dupDepartment";
+		return "department/dupDepartment";
 	}
 }
