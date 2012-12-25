@@ -8,6 +8,8 @@
 	<http pattern="/css/**" security="none" />
 	<http pattern="/js/**" security="none" />
 	<http pattern="/img/**" security="none" />
+	<http pattern="/login" security="none" />
+	<http pattern="/loginfailed" security="none" />
 
 	<http use-expressions="true">
 		<intercept-url pattern="/department/new/**" access="hasRole('EDITOR')" />
@@ -17,11 +19,7 @@
 
 		<intercept-url pattern="/**" access="isAuthenticated()" />
 
-		<!-- With recent versions of spring-security there is no need to explicitly 
-			exclude login url from security - it will be excluded by Spring and there 
-			will be no infinite cycle anyway -->
-			
-		<form-login />
+		<form-login login-page="/login" authentication-failure-url="/loginfailed" />
 		<logout logout-success-url="/" delete-cookies="JSESSIONID" />
 		<remember-me />
 	</http>

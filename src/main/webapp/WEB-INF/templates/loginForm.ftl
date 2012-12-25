@@ -42,15 +42,19 @@
     </style>
     
 	<div class="container">
-
-      <form class="form-signin">
+	  <#if (error??) >
+	  	<div class="alert alert-error">
+			Login attempt failed
+		</div>
+	  </#if>
+      <form class="form-signin" action='<@spring.url "/j_spring_security_check"/>' method='POST'>
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="input-block-level" placeholder="Login">
-        <input type="password" class="input-block-level" placeholder="Password">
+        <input type="text" class="input-block-level" name='j_username' placeholder="Login">
+        <input type="password" class="input-block-level" name='j_password' placeholder="Password">
         <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
+          <input type="checkbox" name='_spring_security_remember_me' value="remember-me"> Remember me
         </label>
-        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+        <button class="btn btn-large btn-primary" type="submit" name="submit">Sign in</button>
       </form>
 
     </div>
