@@ -266,13 +266,14 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- this is needed for Heroku launch -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.3</version>
 				<executions>
+					<!-- this is needed for Heroku launch -->
 					<execution>
+						<id>heroku</id>
 						<phase>package</phase>
 						<goals>
 							<goal>copy</goal>
@@ -284,6 +285,24 @@
 									<artifactId>webapp-runner</artifactId>
 									<version>7.0.22.3</version>
 									<destFileName>webapp-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+					<!-- Freemaarker requires that all taglibs should reside in WEB-INF/lib folder-->
+					<execution>
+						<id>tests</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/src/main/webapp/WEB-INF/lib/</outputDirectory>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.springframework.security</groupId>
+									<artifactId>spring-security-taglibs</artifactId>
+									<version>${spring.security.version}</version>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
