@@ -48,7 +48,7 @@ public abstract class AbstractEmployeeController {
 		}
 
 		if (bindingResult.hasErrors()) {
-			return new ModelAndView("employeeForm", "employee", employee);
+			return new ModelAndView("employee/employeeForm", "employee", employee);
 		}
 		dao.saveOrUpdateEmployee(employee);
 		return new ModelAndView("redirect:/employee/list");
