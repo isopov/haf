@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -66,7 +67,8 @@ public class EmployeeControllerTest {
 	public void testListExcel() throws Exception {
 		this.mockMvc.perform(get("/employee/list/excel"))
 				.andExpect(status().isOk())
-				.andExpect(content().contentType("application/vnd.ms-excel"));
+				.andExpect(content().contentType("application/vnd.ms-excel"))
+				.andExpect(header().string("Content-Disposition", "attachment; filename=\"employee-list.xls\""));
 	}
 
 	@Test
@@ -136,7 +138,9 @@ public class EmployeeControllerTest {
 						.param("active", "true")
 						.param("birthdate", "20/10/1987")
 						.param("department", "1"))
-				.andExpect(status().isMovedTemporarily());
+				.andExpect(status().isMovedTemporarily())
+				.andExpect(header().string("Location", "/employee/list"));
+
 		created = dao.searchEmployees("TestFirstName*");
 		assertEquals(1, created.size());
 		Employee employee = created.get(0);
