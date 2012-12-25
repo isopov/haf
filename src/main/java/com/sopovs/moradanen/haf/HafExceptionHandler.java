@@ -15,8 +15,8 @@ public class HafExceptionHandler implements HandlerExceptionResolver {
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
-		logger.error(ex.getMessage(),ex);
-		return new ModelAndView("500");
+		logger.error(ex.getMessage(), ex);
+		return new ModelAndView("errors/500");
 	}
 
 }

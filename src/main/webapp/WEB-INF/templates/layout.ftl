@@ -19,7 +19,7 @@
       		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     	<![endif]-->
 
-        <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.3.js" type="text/javascript"></script>
+        <script src="<@spring.url "/js/jquery.js"/>" type="text/javascript"></script>
 		<script src="<@spring.url "/js/bootstrap.js"/>" type="text/javascript"></script>
     </head>
 </#macro>

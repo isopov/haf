@@ -3,7 +3,7 @@
 <#assign pageTitle><@spring.message "department.edit" /></#assign>
 
 <@layout.layout pageTitle="${pageTitle}">
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
+	<script src="<@spring.url "/js/jquery.validate.js"/>" type="text/javascript"></script>
 	<script type="text/javascript">
   		$(document).ready(function(){
   			jQuery.extend(jQuery.validator.messages, {
