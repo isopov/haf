@@ -13,7 +13,6 @@
 		<spring.security.version>3.1.3.RELEASE</spring.security.version>
 		<slf4j.version>1.7.2</slf4j.version>
 	</properties>
-
 	<dependencies>
 
 		<dependency>
@@ -135,11 +134,10 @@
 		</dependency>
 
 
-		<!-- Not for use in production! -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.9</version>
 		</dependency>
 
 		<dependency>
@@ -289,7 +287,8 @@
 							</artifactItems>
 						</configuration>
 					</execution>
-					<!-- Freemaarker requires that all taglibs should reside in WEB-INF/lib folder-->
+					<!-- Freemaarker requires that all taglibs should reside in WEB-INF/lib 
+						folder -->
 					<execution>
 						<id>tests</id>
 						<phase>test-compile</phase>

@@ -28,8 +28,6 @@ import com.sopovs.moradanen.haf.domain.Employee;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/applicationContext.xml" })
-// This will roll back any inserts to the DB on every test, and thus tests will
-// be independent
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class DaoServiceTest {
