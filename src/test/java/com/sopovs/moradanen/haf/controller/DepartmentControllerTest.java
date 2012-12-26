@@ -37,7 +37,7 @@ public class DepartmentControllerTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void testDepartment() throws Exception {
+	public void testNewDepartment() throws Exception {
 		List<Department> deps = dao.listDepartments();
 		Assert.assertEquals(8, deps.size());
 		this.mockMvc
@@ -50,9 +50,35 @@ public class DepartmentControllerTest extends AbstractControllerTest {
 	}
 
 	@Test
-	public void testDepartment2() throws Exception {
-		// This is dummy test for independence of tests
-		testDepartment();
+	public void testNewDepartmentDuplicate() throws Exception {
+		testNewDepartment();
+		this.mockMvc
+				.perform(post("/department/new").param("name", "TestDepartmentName"))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().string(containsString("Department with such name already exists")));
+	}
+
+	@Test
+	public void testNewDepartmentWithTooBigName() throws Exception {
+		this.mockMvc.perform(post("/department/new").param("name",
+				"TestDepartmentNameThatIsTooLongTestDepartmentNameThatIsTooLong"
+						+ "TestDepartmentNameThatIsTooLongTestDepartmentNameThatIsTooLong"))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().string(containsString("size must be between 0 and 30")));
+	}
+
+	@Test
+	public void testEditDepartment() throws Exception {
+		Department dep = dao.getDepartment(1L);
+		Assert.assertNotEquals("NewTestDepartmentName", dep.getName());
+		this.mockMvc.perform(post("/department/edit/" + dep.getId()).param("name",
+				"NewTestDepartmentName"))
+				.andExpect(status().isMovedTemporarily())
+				.andExpect(header().string("Location", "/department/list"));
+		dep = dao.getDepartment(1L);
+		Assert.assertEquals("NewTestDepartmentName", dep.getName());
 	}
 
 }
